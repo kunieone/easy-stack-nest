@@ -8,15 +8,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
+const serve_static_1 = require("@nestjs/serve-static");
+const path_1 = require("path");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const cookie_controller_1 = require("./cookie/cookie.controller");
 const session_controller_1 = require("./session/session.controller");
+const auth_module_1 = require("./auth/auth.module");
+const prisma_module_1 = require("./prisma/prisma.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [],
+        imports: [
+            serve_static_1.ServeStaticModule.forRoot({
+                rootPath: (0, path_1.join)(__dirname, '..', 'web'),
+            }),
+            auth_module_1.AuthModule,
+            prisma_module_1.PrismaModule,
+        ],
         controllers: [app_controller_1.AppController, cookie_controller_1.CookieController, session_controller_1.SessionController],
         providers: [app_service_1.AppService],
     })

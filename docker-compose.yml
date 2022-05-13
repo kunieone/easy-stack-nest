@@ -1,0 +1,11 @@
+version: '3'
+services:
+  db:
+    image: postgres:12
+    ports:
+      - 5432:5432
+    environment:
+      POSTRES_USER: postgres
+      POSTRES_PASSWORD: 123
+      POSTRES_DB: nestjs
+      POSTGRES_HOST_AUTH_METHOD: "trust"
