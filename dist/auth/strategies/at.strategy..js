@@ -9,33 +9,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthService = void 0;
+exports.AtStrategy = void 0;
 const common_1 = require("@nestjs/common");
-const prisma_service_1 = require("../prisma/prisma.service");
-const bcrypt = require("bcrypt");
-let AuthService = class AuthService {
-    constructor(prisma) {
-        this.prisma = prisma;
-    }
-    async hashData(data) {
-        return bcrypt.hash(data, 10);
-    }
-    async signup(dto) {
-        const hash = await this.hashData(dto.password);
-        const newUser = this.prisma.user.create({
-            data: {
-                email: dto.email,
-                hash,
-            },
+const passport_1 = require("@nestjs/passport");
+const passport_jwt_1 = require("passport-jwt");
+let AtStrategy = class AtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy, 'jwt-refresh') {
+    constructor() {
+        super({
+            jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
+            ignoreExpiration: false,
+            secretOrKey: 'at-secret',
+            passReqToCallback: 'at-secret',
         });
     }
-    signin() { }
-    logout() { }
-    refresh() { }
+    validate(req, payload) {
+        return payload;
+    }
 };
-AuthService = __decorate([
+AtStrategy = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
-], AuthService);
-exports.AuthService = AuthService;
-//# sourceMappingURL=auth.service.js.map
+    __metadata("design:paramtypes", [])
+], AtStrategy);
+exports.AtStrategy = AtStrategy;
+//# sourceMappingURL=at.strategy..js.map
